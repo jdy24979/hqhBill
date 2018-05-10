@@ -1,0 +1,23 @@
+.logo{
+    font-size: 18px
+}
+.hqh_company_zh{
+    height: 32px;
+    line-height: 42px;
+    color: #ffffff
+}
+.hqh_company_en{
+    height: 32px;
+    line-height: 24px;
+    color: #ffffff4f
+}
+.user{
+    font-size: 14px;
+    color:#fff;
+    padding-top: 10px;
+
+}
+.userName{
+    margin:0 10px;
+    cursor: pointer;
+}
