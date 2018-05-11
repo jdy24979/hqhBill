@@ -5,7 +5,7 @@ import { BillListComponent } from "./components/bill-list/bill-list.component";
 import { DetailComponent } from "./components/detail/detail.component";
 const routes: Routes = [
     {path:"",component:BillTotalComponent},
-    {path:"query",component:BillTotalComponent},
+    {path:"total",component:BillTotalComponent},
     {path:"list",component:BillListComponent},
     {path:"detail",component:DetailComponent}
 ];
