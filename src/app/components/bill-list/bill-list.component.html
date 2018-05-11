@@ -1,3 +1,86 @@
-<p>
-  bill-list works!
-</p>
+<form nz-form class="ant-advanced-search-form">
+  <div nz-row [nzGutter]="40">
+    <div nz-col [nzSpan]="8">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label [attr.for]="queryName">单位名称</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-input [nzSize]="'large'" [(ngModel)]="query.name" name="queryName" [nzPlaceHolder]="'请输入单位名称'" [nzId]="queryName"></nz-input>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label [attr.for]="queryTel">联系电话</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-input [nzSize]="'large'" [(ngModel)]="query.tel" name="queryTel" [nzPlaceHolder]="'请输入联系电话'" [nzId]="queryTel"></nz-input>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label [attr.for]="queryDesc">详情</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-input [nzSize]="'large'" [(ngModel)]="query.desc" name="queryDesc" [nzPlaceHolder]="'请输入详情'" [nzId]="queryDesc"></nz-input>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>状态</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-select style="width: 120px;" [(ngModel)]="query.type" name="queryType" [nzPlaceHolder]="'选择账单状态'" nzAllowClear>
+            <nz-option [nzValue]="'已结算'" [nzLabel]="'已结算'"></nz-option>
+            <nz-option [nzValue]="'未结算'" [nzLabel]="'未结算'"></nz-option>
+          </nz-select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div nz-row>
+    <div nz-col [nzSpan]="24">
+      <button nz-button [nzType]="'primary'" (click)="getData()">搜索</button>
+      <button nz-button (click)="resetForm()">清空</button>
+      <button nz-button [nzType]="'primary'" [routerLink]="['/add']" style="float: left;">
+        新建账单
+      </button>
+    </div>
+  </div>
+</form>
+<div class="search-result-list">
+  <nz-table #nzTable [nzDataSource]="data" [nzPageSize]="10">
+    <thead nz-thead>
+      <tr>
+        <th nz-th><span>日期</span></th>
+        <th nz-th><span>单位名称</span></th>
+        <th nz-th><span>详情</span></th>
+        <th nz-th><span>金额</span></th>
+        <th nz-th><span>状态</span></th>
+        <th nz-th><span>类型</span></th>
+      </tr>
+    </thead>
+    <tbody nz-tbody>
+      <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+        <td nz-td>{{data.date}}</td>
+        <td nz-td>
+          <a (click)="setPageInfo(data.id)" [routerLink]="['/detail']">{{data.name}}</a>
+        </td>
+        <td nz-td>{{data.desc}}</td>
+        <td nz-td>{{data.amount}}</td>
+        <td nz-td>
+           {{data.status}}
+        </td>
+        <td nz-td>
+          {{data.type}}
+       </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

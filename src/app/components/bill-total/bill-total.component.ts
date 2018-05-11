@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {NzMessageService} from 'ng-zorro-antd'; 
+import { NzMessageService } from 'ng-zorro-antd'; 
+import { PageInfoService } from '../../services/page-info.service';
 
 @Component({
   selector: 'app-bill-total',
@@ -13,9 +14,9 @@ export class BillTotalComponent implements OnInit {
   
   data;
   addInfo;
-  constructor(private http: HttpClient,private _message: NzMessageService) {
+  constructor(private http: HttpClient,private _message: NzMessageService,public PageInfoService: PageInfoService) {
     
-    this.data = [{id: "01000000003", name: "hqh2", settled: "0", unsettled: "0", total: "0", type: "销货单"}];
+    this.data = [];
     this.query = {
       name:"",
       type:null
@@ -40,7 +41,7 @@ export class BillTotalComponent implements OnInit {
   }
 
   ngOnInit() {
-    //this.getData();
+    this.getData();
   }
 
   // 模态框相关
@@ -58,6 +59,10 @@ export class BillTotalComponent implements OnInit {
         this.isVisible = false;
         this.createMessage('success','新增成功');
         this.getData();
+        this.addInfo = {
+          name:"",
+          type:'销货单'
+        }
       }else{
         this.isConfirmLoading = false;
         this.createMessage('error','系统异常');
@@ -73,4 +78,7 @@ export class BillTotalComponent implements OnInit {
     this.isVisible = false;
   };
 
+  setPageInfo(id){
+    this.PageInfoService.setCurTotalId(id);
+  }
 }
