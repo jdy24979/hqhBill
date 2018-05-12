@@ -36,7 +36,6 @@ export class BillTotalComponent implements OnInit {
     this.http.post('./api/billTotal/list',this.query)
     .subscribe(res => {
       this.data = res;
-      console.log(this.data);
     });
   }
 

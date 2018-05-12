@@ -1,3 +1,124 @@
-<p>
-  bill-add works!
-</p>
+<form nz-form class="ant-advanced-search-form">
+  <div nz-row [nzGutter]="40">
+    <div nz-col [nzSpan]="8">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label [attr.for]="addInfoName">单位名称</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-input [disabled]="true" [nzSize]="'large'" [(ngModel)]="addInfo.name" name="addInfoName" [nzPlaceHolder]="'请输入单位名称'" [nzId]="addInfoName"></nz-input>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label [attr.for]="queryTel">联系电话</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-input [nzSize]="'large'" [(ngModel)]="addInfo.tel" name="addInfoTel" [nzPlaceHolder]="'请输入联系电话'" [nzId]="addInfoTel"></nz-input>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label [attr.for]="queryTel">账单类型</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-select style="width: 120px;" [disabled]="true" [(ngModel)]="addInfo.type" name="queryType" [nzPlaceHolder]="'选择账单类型'" nzAllowClear>
+            <nz-option [nzValue]="'销货单'" [nzLabel]="'销货单'"></nz-option>
+            <nz-option [nzValue]="'购货单'" [nzLabel]="'购货单'"></nz-option>
+          </nz-select>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label [attr.for]="queryAmount">账单金额</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-input [nzSize]="'large'" [(ngModel)]="addInfo.amount" name="addInfoAmount" [nzPlaceHolder]="'请输入账单金额'" [nzId]="addInfoAmount"></nz-input>
+        </div>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col [nzSpan]="24">
+        <button nz-button [nzType]="'primary'" (click)="showModal()" style="float: left;">
+          新增商品
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- 模态框 -->
+<nz-modal [nzVisible]="isVisible" [nzTitle]="'新增商品'" [nzContent]="modalContent" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)">
+    <ng-template #modalContent>
+        <form nz-form>
+            <div nz-form-item nz-row>
+              <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                <label for="detailInfo.product_name" nz-form-item-required>商品名</label>
+              </div>
+              <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                <nz-input [nzSize]="'large'" [(ngModel)]="detailInfo.product_name" name="detailInfoProductName" [nzId]="'detailInfo.product_name'"></nz-input>
+              </div>
+            </div>
+            <div nz-form-item nz-row>
+              <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                <label for="detailInfo.model_name">规格</label>
+              </div>
+              <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                <nz-input [nzSize]="'large'" [(ngModel)]="detailInfo.model_name" name="detailInfoModelName" [nzId]="'detailInfo.model_name'"></nz-input>
+              </div>
+            </div>
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                  <label for="detailInfo.number" nz-form-item-required>数量</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                  <nz-input [nzSize]="'large'" [(ngModel)]="detailInfo.number" name="detailInfoNumber" [nzId]="'detailInfo.number'"></nz-input>
+                </div>
+              </div>
+              <div nz-form-item nz-row>
+                  <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                    <label for="detailInfo.unit" nz-form-item-required>单价</label>
+                  </div>
+                  <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                    <nz-input [nzSize]="'large'" [(ngModel)]="detailInfo.unit" name="detailInfoUnit" [nzId]="'detailInfo.unit'"></nz-input>
+                  </div>
+                </div>
+          </form>
+    </ng-template>
+  </nz-modal>
+  <!-- 模态框END -->
+
+
+<div class="search-result-list">
+  <nz-table #nzTable [nzDataSource]="data" [nzPageSize]="10" [nzShowFooter]="true">
+    <thead nz-thead>
+      <tr>
+        <th nz-th><span>商品名</span></th>
+        <th nz-th><span>规格</span></th>
+        <th nz-th><span>数量</span></th>
+        <th nz-th><span>单价</span></th>
+        <th nz-th><span>总价</span></th>
+      </tr>
+    </thead>
+    <tbody nz-tbody>
+      <tr nz-tbody-tr *ngFor="let data of data">
+        <td nz-td>{{data.product_name}}</td>
+        <td nz-td>
+          {{data.model_name}}
+        </td>
+        <td nz-td>{{data.number}}</td>
+        <td nz-td>{{data.unit}}</td>
+        <td nz-td>
+           {{data.number * data.unit}}
+        </td>
+      </tr>
+    </tbody>
+    <span nz-table-footer>货款总额: {{ goodsAmount }}</span>
+  </nz-table>
+</div>
