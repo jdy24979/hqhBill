@@ -21,7 +21,7 @@ export class BillListComponent implements OnInit {
     this.query = {
       rela_t_id:this.faId,
       name:"",
-      desc:"",
+      description:"",
       dateFrom:null,
       dateTo:null,
       tel:"",
@@ -33,7 +33,7 @@ export class BillListComponent implements OnInit {
     this.query = {
       rela_t_id:this.faId,
       name:"",
-      desc:"",
+      description:"",
       dateFrom:null,
       dateTo:null,
       tel:"",

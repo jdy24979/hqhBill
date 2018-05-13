@@ -1,3 +1,32 @@
-<p>
-  detail works!
-</p>
+  <div class="search-result-list">
+    <nz-table #nzTable [nzDataSource]="data" [nzPageSize]="10" [nzShowFooter]="true">
+      <thead nz-thead>
+        <tr>
+          <th nz-th><span>商品名</span></th>
+          <th nz-th><span>规格</span></th>
+          <th nz-th><span>数量</span></th>
+          <th nz-th><span>单价</span></th>
+          <th nz-th><span>总价</span></th>
+        </tr>
+      </thead>
+      <tbody nz-tbody>
+        <tr nz-tbody-tr *ngFor="let data of data">
+          <td nz-td>{{data.product_name}}</td>
+          <td nz-td>
+            {{data.model_name}}
+          </td>
+          <td nz-td>{{data.number}}</td>
+          <td nz-td>{{data.unit}}</td>
+          <td nz-td>
+             {{data.number * data.unit}}
+          </td>
+        </tr>
+      </tbody>
+      <span nz-table-footer>货款总额: {{ goodsAmount }}</span>
+    </nz-table>
+  </div>
+  <div nz-row>
+    <div nz-col [nzSpan]="24">
+      <button nz-button [routerLink]="['/list']">返回</button>
+    </div>
+  </div>

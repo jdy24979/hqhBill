@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PageInfoService } from '../../services/page-info.service';
 import { HttpClient } from '@angular/common/http';
+import { NzModalService } from 'ng-zorro-antd'; 
 import { NzMessageService } from 'ng-zorro-antd'; 
 
 @Component({
@@ -16,15 +17,14 @@ export class BillAddComponent implements OnInit {
     tel:"",
     rela_t_id:this.PageInfoService.curTotalId,
     date: +new Date(),
-    desc:"",
-    amount:null,
-    detailList:[]
+    description:"",
+    amount:null
   };
   data=[];
   detailInfo;
   faId;
   goodsAmount = 0;
-  constructor(public PageInfoService: PageInfoService,public http: HttpClient,private _message:NzMessageService) {
+  constructor(public PageInfoService: PageInfoService,public http: HttpClient,private modalService: NzModalService,private _message:NzMessageService) {
   }
   ngOnInit() {
     this.faId = this.PageInfoService.curListId
@@ -38,17 +38,10 @@ export class BillAddComponent implements OnInit {
     var that = this;
     this.http.post('./api/billTotal/select',{id:this.PageInfoService.curTotalId})
     .subscribe(res => {
-      console.log(this)
-      that.addInfo = {
-        name:res['name'],
-        type:res['type'],
-        tel:"",
-        rela_t_id:this.PageInfoService.curTotalId,
-        date: +new Date(),
-        desc:"",
-        amount:null,
-        detailList:[]
-      }
+      this.addInfo.name = res['name'];
+      this.addInfo.type = res['type'];
+      this.addInfo.rela_t_id = this.PageInfoService.curTotalId;
+      this.addInfo.date = +new Date();
     })
   }
 
@@ -68,7 +61,7 @@ export class BillAddComponent implements OnInit {
       rela_l_id:this.faId
     })
     this.createMessage('success','新增成功');
-    console.log(this.data)
+    this.getGoodsAmount(); 
     this.detailInfo = {
       product_name:"",
       model_name:"",
@@ -76,6 +69,64 @@ export class BillAddComponent implements OnInit {
       unit:null
     }
   };
+
+//confirm 确认删除
+_allChecked = false;
+  _indeterminate = false;
+
+  _refreshStatus() {
+    const allChecked = this.data.length == 0 ? false : this.data.every(value => value.checked === true);
+    const allUnChecked = this.data.length == 0 ? true : this.data.every(value => !value.checked);
+    this._allChecked = allChecked;
+    this._indeterminate = (!allChecked) && (!allUnChecked);
+    
+  }
+
+  _checkAll(value) {
+    if (value) {
+      this.data.forEach(data => {
+        data.checked = true;
+      });
+    } else {
+      this.data.forEach(data => {
+        data.checked = false;
+      });
+    }
+    this._refreshStatus();
+  }
+  showConfirm = () => {
+    let selecteds =[];
+    let str = "";
+    for(let i=0;i < this.data.length;i++){
+      if(this.data[i].checked){
+        selecteds.push(i);
+        str += this.data[i].product_name +","
+      }
+    }
+    var that = this;
+    this.modalService.confirm({
+      title  : '是否确认删除',
+      content: '<b>商品:' + str + '</b>',
+      onOk() {
+        for (let i = 0; i < selecteds.length; i++) {
+          const element = selecteds[i];
+          that.data.splice(element-i,1)
+        }
+        that._refreshStatus();
+      },
+      onCancel() {
+      }
+    });
+  };
+
+
+  getGoodsAmount(){
+    let $amount = 0;
+    for(let i in this.data){
+      $amount += this.data[i].number * this.data[i].unit
+    }
+    this.goodsAmount = $amount;
+  }
 
   createMessage = (type,msg) => {
     this._message.create(type,msg);
@@ -90,5 +141,23 @@ export class BillAddComponent implements OnInit {
       unit:null
     }
   };
+
+  submit(){
+    let desc = "";
+    for (let i = 0; i < this.data.length; i++) {
+      const element = this.data[i];
+      desc += element.product_name +"_"+element.model_name
+    }
+    this.addInfo.description = desc;
+    this.http.post("./api/billList/add",{
+      addInfo:this.addInfo,
+      detail:this.data
+    }).subscribe(res =>{
+      if(res['code'] == 0){
+        document.getElementById('goBack').click();
+
+      }
+    })
+  }
 
 }
