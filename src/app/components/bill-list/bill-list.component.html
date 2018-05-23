@@ -1,3 +1,4 @@
+<a href="javascript:void(0);" [routerLink]="['/total']" style="margin-bottom:13px;display: inline-block;">单位列表</a><span> -> 订单列表</span>
 <form nz-form class="ant-advanced-search-form">
   <div nz-row [nzGutter]="40">
     <div nz-col [nzSpan]="8">
@@ -54,6 +55,9 @@
       <button nz-button [nzType]="'primary'" (click)="showConfirm()" [disabled]="!_allChecked && !_indeterminate"  style="float: left;">
         账单结算
       </button>
+      <label class="unsettled">未结账单：{{unsettled}}</label>
+      <label class="unsettled">未结账单金额：{{unsettledSum}}</label>
+        
     </div>
   </div>
 </form>

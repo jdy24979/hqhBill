@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PageInfoService } from '../../services/page-info.service';
-import { NzModalService } from 'ng-zorro-antd'; 
+import { NzModalService } from 'ng-zorro-antd';
 import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
@@ -11,48 +11,59 @@ import { NzMessageService } from 'ng-zorro-antd';
 })
 export class BillListComponent implements OnInit {
 
-  query:object;
+  query: object;
   faId;
   data;
 
-  constructor(private http: HttpClient,public PageInfoService: PageInfoService,private modalService: NzModalService,private _message: NzMessageService ) { 
+  constructor(private http: HttpClient, public PageInfoService: PageInfoService, private modalService: NzModalService, private _message: NzMessageService) {
     this.faId = this.PageInfoService.curTotalId;
     this.data = [];
     this.query = {
-      rela_t_id:this.faId,
-      name:"",
-      description:"",
-      dateFrom:null,
-      dateTo:null,
-      tel:"",
-      status:null
+      rela_t_id: this.faId,
+      name: "",
+      description: "",
+      dateFrom: null,
+      dateTo: null,
+      tel: "",
+      status: null
     }
   }
 
-  resetForm(){
+  resetForm() {
     this.query = {
-      rela_t_id:this.faId,
-      name:"",
-      description:"",
-      dateFrom:null,
-      dateTo:null,
-      tel:"",
-      status:null
+      rela_t_id: this.faId,
+      name: "",
+      description: "",
+      dateFrom: null,
+      dateTo: null,
+      tel: "",
+      status: null
     }
   }
 
-  getData(){
-    this.http.post('./api/billList/list',this.query)
-    .subscribe(res => {
-      this.data = res;
-    });
+
+  unsettled = 0;
+  unsettledSum = 0;
+  getData() {
+    this.http.post('./api/billList/list', this.query)
+      .subscribe(res => {
+        this.data = res;
+        this.unsettled = 0;
+        this.unsettledSum = 0;
+        this.data.forEach(data => {
+          if (data.status == '未结算') {
+            this.unsettled++;
+            this.unsettledSum += Number(data.amount);
+          }
+        });
+      });
   }
 
   ngOnInit() {
     this.getData();
   }
 
-  setPageInfo(id){
+  setPageInfo(id) {
     this.PageInfoService.setCurListId(id);
   }
 
@@ -69,7 +80,7 @@ export class BillListComponent implements OnInit {
   _checkAll(value) {
     if (value) {
       this.data.forEach(data => {
-        if(data.status == '未结算'){
+        if (data.status == '未结算') {
           data.checked = true;
         }
       });
@@ -83,44 +94,43 @@ export class BillListComponent implements OnInit {
 
   // 模态框相关
   isVisible = false;
-  selectedIds:String[];
+  selectedIds: String[];
 
   showConfirm = () => {
-    this.selectedIds =[];
+    this.selectedIds = [];
     let amount = 0;
-    for(let i in this.data){
-      if(this.data[i].checked){
+    for (let i in this.data) {
+      if (this.data[i].checked) {
         this.selectedIds.push(this.data[i].id)
         amount += Number(this.data[i].amount)
       }
     }
     var that = this;
     this.modalService.confirm({
-      title  : '是否确认结算',
-      content: '<b>共选中' + this.selectedIds.length + '条账单记录，共计金额'+ amount +'</b>',
+      title: '是否确认结算',
+      content: '<b>共选中' + this.selectedIds.length + '条账单记录，共计金额' + amount + '</b>',
       onOk() {
         return new Promise((resolve) => {
-          that.http.post('./api/billList/changeStatus',{ids:that.selectedIds,faId:that.faId})
-          .subscribe(res => {
-            if(res['code'] == 0){
-              that.createMessage('success','结算成功');
-              that.getData();
-              that._allChecked = false;
-            }else{
-              that.createMessage('error','系统异常');
-            }
-            resolve();
-          })
+          that.http.post('./api/billList/changeStatus', { ids: that.selectedIds, faId: that.faId })
+            .subscribe(res => {
+              if (res['code'] == 0) {
+                that.createMessage('success', '结算成功');
+                that.getData();
+                that._allChecked = false;
+              } else {
+                that.createMessage('error', '系统异常');
+              }
+              resolve();
+            })
         });
-       
+
       },
       onCancel() {
       }
     });
   };
 
-  createMessage = (type,msg) => {
-    this._message.create(type,msg);
+  createMessage = (type, msg) => {
+    this._message.create(type, msg);
   };
-
 }

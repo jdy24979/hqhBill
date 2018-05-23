@@ -39,6 +39,7 @@ export class BillAddComponent implements OnInit {
     this.http.post('./api/billTotal/select',{id:this.PageInfoService.curTotalId})
     .subscribe(res => {
       this.addInfo.name = res['name'];
+      this.addInfo.tel = res['tel'];
       this.addInfo.type = res['type'];
       this.addInfo.rela_t_id = this.PageInfoService.curTotalId;
       this.addInfo.date = +new Date();
