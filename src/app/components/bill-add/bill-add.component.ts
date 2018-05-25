@@ -18,7 +18,7 @@ export class BillAddComponent implements OnInit {
     rela_t_id:this.PageInfoService.curTotalId,
     date: +new Date(),
     description:"",
-    amount:null
+    amount:0
   };
   data=[];
   detailInfo;

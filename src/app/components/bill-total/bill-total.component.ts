@@ -10,7 +10,10 @@ import { PageInfoService } from '../../services/page-info.service';
 })
 export class BillTotalComponent implements OnInit {
 
-  query:object;
+  query:{
+    name:String;
+    type:String;
+  };
   
   data;
   addInfo;

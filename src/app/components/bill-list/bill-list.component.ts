@@ -11,9 +11,17 @@ import { NzMessageService } from 'ng-zorro-antd';
 })
 export class BillListComponent implements OnInit {
 
-  query: object;
-  faId;
-  data;
+  query: {
+    name:String;
+    tel:String;
+    rela_t_id: Number;
+    description: String;
+    dateFrom: String;
+    dateTo: String;
+    status: String;
+  };
+  faId:Number;
+  data:any;
 
   constructor(private http: HttpClient, public PageInfoService: PageInfoService, private modalService: NzModalService, private _message: NzMessageService) {
     this.faId = this.PageInfoService.curTotalId;
@@ -63,7 +71,7 @@ export class BillListComponent implements OnInit {
     this.getData();
   }
 
-  setPageInfo(id) {
+  setPageInfo(id:Number) {
     this.PageInfoService.setCurListId(id);
   }
 

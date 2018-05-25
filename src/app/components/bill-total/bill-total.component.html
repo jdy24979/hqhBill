@@ -3,10 +3,10 @@
     <div nz-col [nzSpan]="8">
       <div nz-form-item nz-row>
         <div nz-form-label nz-col [nzSpan]="5">
-          <label [attr.for]="queryName">单位名称</label>
+          <label [attr.for]="'queryName'">单位名称</label>
         </div>
         <div nz-form-control nz-col [nzSpan]="19">
-          <nz-input [nzSize]="'large'" [(ngModel)]="query.name" name="queryName" [nzPlaceHolder]="'请输入单位名称'" [nzId]="queryName"></nz-input>
+          <nz-input [nzSize]="'large'" [(ngModel)]="query.name" name="queryName" [nzPlaceHolder]="'请输入单位名称'" [nzId]="'queryName'"></nz-input>
         </div>
       </div>
     </div>
