@@ -7,10 +7,10 @@ import { BillAddComponent } from "./components/bill-add/bill-add.component";
 
 const routes: Routes = [
     {path:"",component:BillTotalComponent},
-    {path:"total",component:BillTotalComponent},
-    {path:"list",component:BillListComponent},
-    {path:"detail",component:DetailComponent},
-    {path:"add",component:BillAddComponent}
+    {path:"bill/total",component:BillTotalComponent},
+    {path:"bill/list",component:BillListComponent},
+    {path:"bill/detail",component:DetailComponent},
+    {path:"bill/add",component:BillAddComponent}
 ];
 
 @NgModule({

@@ -39,7 +39,7 @@ export class BillAddComponent implements OnInit {
     this.http.post('./api/billTotal/select',{id:this.PageInfoService.curTotalId})
     .subscribe(res => {
       this.addInfo.name = res['name'];
-      this.addInfo.tel = res['tel'];
+      this.addInfo.tel = res['tel'] || "";
       this.addInfo.type = res['type'];
       this.addInfo.rela_t_id = this.PageInfoService.curTotalId;
       this.addInfo.date = +new Date();
@@ -147,7 +147,7 @@ _allChecked = false;
     let desc = "";
     for (let i = 0; i < this.data.length; i++) {
       const element = this.data[i];
-      desc += element.product_name +"_"+element.model_name
+      desc += element.model_name + element.product_name +";"
     }
     this.addInfo.description = desc;
     this.http.post("./api/billList/add",{

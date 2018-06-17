@@ -76,7 +76,7 @@
     <tbody nz-tbody>
       <tr nz-tbody-tr *ngFor="let data of nzTable.data">
         <td nz-td>
-          <a (click)="setPageInfo(data.id)" [routerLink]="['/list']">{{data.name}}</a>
+          <a (click)="setPageInfo(data.id)" [routerLink]="['/bill/list']">{{data.name}}</a>
         </td>
         <td nz-td>{{data.settled}}</td>
         <td nz-td>{{data.unsettled}}</td>
